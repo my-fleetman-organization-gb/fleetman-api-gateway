@@ -1,5 +1,5 @@
 pipeline {
-   agent any  // Run on any available agent
+   agent any  // Run on any available agent.
 
    environment {
      // You must set the following environment variables
