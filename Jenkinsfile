@@ -1,9 +1,5 @@
 pipeline {
-   agent {
-      docker {
-         image 'maven:3.8.8'  // Use Maven Docker image
-      }
-   }
+   agent any  // Run on any available agent
 
    environment {
      // You must set the following environment variables
@@ -24,8 +20,12 @@ pipeline {
 
       stage('Build') {
          steps {
-            sh 'mvn -version'  // Verify Maven version
-            sh 'mvn clean package'  // Run Maven build
+            script {
+               docker.image('maven:3.8.8').inside {
+                   sh 'mvn -version'  // Verify Maven version
+                   sh 'mvn clean package'  // Run Maven build
+               }
+            }
          }
       }
 
