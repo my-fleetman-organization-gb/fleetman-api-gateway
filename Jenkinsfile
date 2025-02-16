@@ -1,8 +1,8 @@
 pipeline {
    agent {
       docker {
-         image 'maven:3.8.8'  // Use Maven Docker image
-         args '-v $HOME/.m2:/root/.m2'  // Mount local .m2 directory to container
+         image 'maven:3.8.8'
+         args '-v /var/jenkins_home/workspace:/var/jenkins_home/workspace'  // Mount workspace
       }
    }
 
