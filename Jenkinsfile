@@ -41,9 +41,11 @@ pipeline {
 
       stage('Deploy to Cluster') {
          steps {
-            // Use a Docker container with kubectl and envsubst installed
-            docker.image('lachlanevenson/k8s-kubectl:latest').inside {
-               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+            script {
+               // Use a Docker container with kubectl and envsubst installed
+               docker.image('lachlanevenson/k8s-kubectl:latest').inside {
+                  sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+               }
             }
          }
       }
