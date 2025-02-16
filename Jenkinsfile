@@ -1,9 +1,8 @@
 pipeline {
-   agent {
-      docker {
-         image 'maven:3.8.8'
-         args '-v /var/jenkins_home/workspace:/var/jenkins_home/workspace'  // Mount workspace
-      }
+   agent any  // Use any available agent
+
+   tools {
+        maven 'Maven 3.x'  // Reference the Maven installation you configured in Global Tool Configuration
    }
 
    environment {
