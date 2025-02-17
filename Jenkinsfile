@@ -47,9 +47,12 @@ pipeline {
                 sh "docker image build -t ${REPOSITORY_TAG} ."  // Build the Docker image
                 echo "Docker image built..."
 
-                echo "Pushing Docker image to registry..."
-                sh "docker push ${REPOSITORY_TAG}"  // Push the image to the registry
-                echo "Docker image pushed to registry..."
+                echo "Logging in to Docker Hub..."
+                docker.withRegistry('https://index.docker.io/v1/', 'Docker_Credentials') {
+                    echo "Pushing Docker image to registry..."
+                    sh "docker push ${REPOSITORY_TAG}"  // Push the image to the registry
+                    echo "Docker image pushed to registry..."
+                }
             }
          }
       }
