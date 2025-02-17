@@ -57,7 +57,7 @@ pipeline {
                 // Using docker image with explicit kubectl command
                 docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint=''") {
                     echo 'Running kubectl with envsubst for YAML substitution'
-                    sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'  // Apply Kubernetes configuration
+                    sh ' ${WORKSPACE}/deploy.yaml | kubectl apply -f -'  // Apply Kubernetes configuration
                 }
                 echo 'Deployment to Kubernetes cluster completed.'
             }
