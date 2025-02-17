@@ -46,25 +46,24 @@ pipeline {
                 echo "Building Docker image with tag ${REPOSITORY_TAG}..."
                 sh "docker image build -t ${REPOSITORY_TAG} ."
                 echo "Docker image built..."
-                
             }
          }
       }
 
       stage('Deploy to Cluster') {
-    steps {
-        script {
-            echo 'Deploying to Kubernetes cluster...'
-            // Using docker image with explicit kubectl command
-            docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint=''") {
-                echo 'Running kubectl with envsubst for YAML substitution'
-                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'  // Apply Kubernetes configuration
+         steps {
+            script {
+                echo 'Deploying to Kubernetes cluster...'
+                // Using docker image with explicit kubectl command
+                docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint=''") {
+                    echo 'Running kubectl with envsubst for YAML substitution'
+                    sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'  // Apply Kubernetes configuration
+                }
+                echo 'Deployment to Kubernetes cluster completed.'
             }
-            echo 'Deployment to Kubernetes cluster completed.'
-        }
-    }
-}
-
+         }
+      }
+   }
 
    post {
       success {
@@ -74,5 +73,4 @@ pipeline {
          echo 'Build or deployment failed. Please check the logs for errors.'
       }
    }
-}
 }
