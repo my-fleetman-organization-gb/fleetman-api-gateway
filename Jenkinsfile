@@ -52,18 +52,19 @@ pipeline {
       }
 
       stage('Deploy to Cluster') {
-         steps {
-            script {
-               echo 'Deploying to Kubernetes cluster...'
-               // Ensure kubectl is working within the container and use envsubst for YAML substitution
-               docker.image('lachlanevenson/k8s-kubectl:latest').inside {
-                  sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'  // Apply Kubernetes configuration
-               }
-               echo 'Deployment to Kubernetes cluster completed.'
+    steps {
+        script {
+            echo 'Deploying to Kubernetes cluster...'
+            // Using docker image with explicit kubectl command
+            docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint=''") {
+                echo 'Running kubectl with envsubst for YAML substitution'
+                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'  // Apply Kubernetes configuration
             }
-         }
-      }
-   }
+            echo 'Deployment to Kubernetes cluster completed.'
+        }
+    }
+}
+
 
    post {
       success {
