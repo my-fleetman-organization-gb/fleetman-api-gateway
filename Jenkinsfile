@@ -45,10 +45,8 @@ pipeline {
             script {
                 echo "Building Docker image with tag ${REPOSITORY_TAG}..."
                 sh "docker image build -t ${REPOSITORY_TAG} ."
-                echo "Docker image built. Pushing to DockerHub..."
-                // Optionally, push to DockerHub or other container registry
-                sh "docker push ${REPOSITORY_TAG}"
-                echo "Docker image pushed successfully."
+                echo "Docker image built..."
+                
             }
          }
       }
