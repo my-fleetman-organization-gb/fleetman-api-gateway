@@ -7,7 +7,6 @@ pipeline {
    
    environment {
      SERVICE_NAME = "fleetman-api-gateway"
-  // REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
      REPOSITORY_TAG = "richardchesterwood/k8s-fleetman-api-gateway:performance"
      MAVEN_OPTS = '-Dmaven.repo.local=$WORKSPACE/.m2/repository'  // Use a custom local repository in the workspace
    }
@@ -45,8 +44,12 @@ pipeline {
          steps {
             script {
                 echo "Building Docker image with tag ${REPOSITORY_TAG}..."
-                sh "docker image build -t ${REPOSITORY_TAG} ."
+                sh "docker image build -t ${REPOSITORY_TAG} ."  // Build the Docker image
                 echo "Docker image built..."
+
+                echo "Pushing Docker image to registry..."
+                sh "docker push ${REPOSITORY_TAG}"  // Push the image to the registry
+                echo "Docker image pushed to registry..."
             }
          }
       }
