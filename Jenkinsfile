@@ -63,14 +63,13 @@ pipeline {
                 script {
                     echo 'Deploying to Kubernetes cluster...'
 
-                    // Mount the kubeconfig file properly and ensure it's accessible inside the container
-                    docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint='' -v /var/jenkins_home/.kube/config:/root/.kube/config:rw") {
+                    // Run the container as root to avoid permission issues with .kube/config
+                    docker.image('lachlanevenson/k8s-kubectl:latest').inside(
+                        "-u root --entrypoint='' -v /var/jenkins_home/.kube/config:/root/.kube/config:rw"
+                    ) {
                         echo 'Running deploy.yaml'
 
-                        // Ensure permissions are set correctly inside the container
-                        sh 'chmod 644 /root/.kube/config'  // Set read permissions for the config file
-
-                        // Ensure the KUBECONFIG variable is set inside the container
+                        // Set the KUBECONFIG environment variable inside the container
                         withEnv(["KUBECONFIG=/root/.kube/config"]) {
                             sh 'kubectl apply -f deploy.yaml'  // Apply Kubernetes configuration
                         }
