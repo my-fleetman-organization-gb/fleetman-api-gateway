@@ -72,8 +72,8 @@ pipeline {
                         // Set the KUBECONFIG environment variable inside the container
                         withEnv(["KUBECONFIG=/root/.kube/config"]) {
                             // Ensure that the cluster is reachable from the container
-                            // Use the actual Kubernetes API server URL here
-                            sh 'kubectl config set-cluster my-cluster --server=https://<your-k8s-server-ip>:6443'
+                            // Replace <your-k8s-server-ip> with the actual Kubernetes API server IP or URL
+                            sh 'kubectl config set-cluster my-cluster --server=https://127.0.0.1:6443'
                             sh 'kubectl apply -f deploy.yaml'  // Apply Kubernetes configuration
                         }
                     }
