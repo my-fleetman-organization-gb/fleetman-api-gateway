@@ -65,14 +65,15 @@ pipeline {
 
                     // Run the container as root to avoid permission issues with .kube/config
                     docker.image('lachlanevenson/k8s-kubectl:latest').inside(
-                        "-u root --entrypoint='' -v /var/jenkins_home/.kube/config:/root/.kube/config:rw"
+                        "-u root --entrypoint='' -v /var/jenkins_home/.kube/config:/root/.kube/config:rw --network host"
                     ) {
                         echo 'Running deploy.yaml'
 
                         // Set the KUBECONFIG environment variable inside the container
                         withEnv(["KUBECONFIG=/root/.kube/config"]) {
                             // Ensure that the cluster is reachable from the container
-                            sh 'kubectl config set-cluster my-cluster --server=https://docker-for-desktop:6443'  // Replace with actual API server URL
+                            // Use the actual Kubernetes API server URL here
+                            sh 'kubectl config set-cluster my-cluster --server=https://<your-k8s-server-ip>:6443'
                             sh 'kubectl apply -f deploy.yaml'  // Apply Kubernetes configuration
                         }
                     }
