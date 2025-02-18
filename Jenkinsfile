@@ -48,7 +48,7 @@ pipeline {
                 echo "Docker image built..."
 
                 echo "Logging in to Docker Hub..."
-                docker.withRegistry('https://index.docker.io/v1/', 'Docker_Credentials') {
+                withDockerRegistry([credentialsId: 'Docker_Credentials', url: 'https://index.docker.io/v1/']) {
                     echo "Pushing Docker image to registry..."
                     sh "docker push ${REPOSITORY_TAG}"  // Push the image to the registry
                     echo "Docker image pushed to registry..."
@@ -61,7 +61,6 @@ pipeline {
          steps {
             script {
                 echo 'Deploying to Kubernetes cluster...'
-                // Using docker image with explicit kubectl command
                 docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint=''") {
                     echo 'Running deploy.yaml '
                     sh 'kubectl apply -f deploy.yaml'  // Apply Kubernetes configuration
