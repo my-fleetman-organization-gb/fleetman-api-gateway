@@ -63,6 +63,7 @@ pipeline {
                 echo 'Deploying to Kubernetes cluster...'
                 docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint=''") {
                     echo 'Running deploy.yaml '
+                    export KUBECONFIG=/var/jenkins_home/.kube/config
                     sh 'kubectl apply -f deploy.yaml'  // Apply Kubernetes configuration
                 }
                 echo 'Deployment to Kubernetes cluster completed.'
