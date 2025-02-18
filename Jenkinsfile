@@ -7,7 +7,7 @@ pipeline {
    
    environment {
      SERVICE_NAME = "fleetman-api-gateway"
-     REPOSITORY_TAG = "richardchesterwood/k8s-fleetman-api-gateway:performance"
+     REPOSITORY_TAG = "gbatra01/k8s-fleetman-api-gateway:performance"
      MAVEN_OPTS = '-Dmaven.repo.local=$WORKSPACE/.m2/repository'  // Use a custom local repository in the workspace
    }
 
