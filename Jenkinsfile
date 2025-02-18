@@ -62,13 +62,17 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to Kubernetes cluster...'
-                    docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint=''") {
+
+                    // Mount the kubeconfig file properly and ensure it's accessible inside the container
+                    docker.image('lachlanevenson/k8s-kubectl:latest').inside("--entrypoint='' -v /var/jenkins_home/.kube/config:/root/.kube/config:ro") {
                         echo 'Running deploy.yaml'
-                        // Set the KUBECONFIG explicitly inside the container
+
+                        // Ensure the KUBECONFIG variable is set inside the container
                         withEnv(["KUBECONFIG=/root/.kube/config"]) {
                             sh 'kubectl apply -f deploy.yaml'  // Apply Kubernetes configuration
                         }
                     }
+
                     echo 'Deployment to Kubernetes cluster completed.'
                 }
             }
