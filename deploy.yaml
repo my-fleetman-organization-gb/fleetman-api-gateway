@@ -39,7 +39,7 @@ spec:
 
   ports:
     - name: http
-      port: 8081
+      port: 8080
       nodePort: 30020
 
   type: NodePort
