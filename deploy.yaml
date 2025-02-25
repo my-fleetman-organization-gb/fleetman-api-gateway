@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: gbatra01/k8s-fleetman-api-gateway:performance
+        image: gbatra01/fleetman-gb-022325:latest
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
